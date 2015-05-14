@@ -36,7 +36,10 @@ class BP_Compliments_Component extends BP_Component {
     public function includes( $includes = array() ) {
         require( $this->path . '/bp-compliments-classes.php' );
         require( $this->path . '/bp-compliments-functions.php' );
+        require( $this->path . '/bp-compliments-taxonomies.php' );
         require( $this->path . '/bp-compliments-screens.php' );
+        require( $this->path . '/bp-compliments-templatetags.php' );
+        require( $this->path . '/bp-compliments-actions.php' );
     }
 
     /**
@@ -131,7 +134,7 @@ class BP_Compliments_Component extends BP_Component {
             return;
         }
 
-        wp_enqueue_script( 'bp-compliments-js', constant( 'BP_COMPLIMENTS_URL' ) . 'includes/bp-compliments.js', array( 'jquery' ) );
+        wp_enqueue_script( 'bp-compliments-js', constant( 'BP_COMPLIMENTS_URL' ) . 'js/bp-compliments.js', array( 'jquery' ) );
     }
 
 }
@@ -142,3 +145,4 @@ function bp_compliments_setup_component() {
     $bp->compliments = new BP_Compliments_Component;
 }
 add_action( 'bp_loaded', 'bp_compliments_setup_component' );
+

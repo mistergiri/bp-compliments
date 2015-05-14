@@ -28,23 +28,9 @@ class BP_Compliments {
         if ( ! empty( $receiver_id ) && ! empty( $sender_id ) ) {
             $this->receiver_id   = (int) $receiver_id;
             $this->sender_id = (int) $sender_id;
-            $this->populate();
         }
     }
 
-    /**
-     * Populate method.
-     *
-     * Used in constructor.
-     *
-     */
-    protected function populate() {
-        global $wpdb, $bp;
-
-        if ( $compliments_id = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$bp->compliments->table_name} WHERE receiver_id = %d AND sender_id = %d", $this->receiver_id, $this->sender_id ) ) ) {
-            $this->id = $compliments_id;
-        }
-    }
 
     /**
      * Saves a compliment into the database.
@@ -59,15 +45,8 @@ class BP_Compliments {
 
         do_action_ref_array( 'bp_compliments_before_save', array( &$this ) );
 
-        // update existing entry
-        if ( $this->id ) {
-            $result = $wpdb->query( $wpdb->prepare( "UPDATE {$bp->compliments->table_name} SET receiver_id = %d, sender_id = %d WHERE id = %d", $this->receiver_id, $this->sender_id, $this->id ) );
-
-            // add new entry
-        } else {
-            $result = $wpdb->query( $wpdb->prepare( "INSERT INTO {$bp->compliments->table_name} ( receiver_id, sender_id ) VALUES ( %d, %d )", $this->receiver_id, $this->sender_id ) );
-            $this->id = $wpdb->insert_id;
-        }
+        $result = $wpdb->query( $wpdb->prepare( "INSERT INTO {$bp->compliments->table_name} ( receiver_id, sender_id, created_at ) VALUES ( %d, %d, %s )", $this->receiver_id, $this->sender_id, current_time( 'mysql' ) ) );
+        $this->id = $wpdb->insert_id;
 
         do_action_ref_array( 'bp_compliments_after_save', array( &$this ) );
 
