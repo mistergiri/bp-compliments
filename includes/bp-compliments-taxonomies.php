@@ -58,9 +58,7 @@ function compliments_taxonomy_add_new_meta_field() {
 }
 add_action( 'compliment_add_form_fields', 'compliments_taxonomy_add_new_meta_field', 10, 2 );
 function compliments_taxonomy_edit_meta_field($term) {
-
     $t_id = $term->term_id;
-
     $term_meta = get_option( "taxonomy_$t_id" ); ?>
     <tr class="form-field">
         <th scope="row" valign="top"><label for="term_meta[compliments_icon]"><?php _e( 'Compliment Icon', 'compliments' ); ?></label></th>

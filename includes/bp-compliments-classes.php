@@ -71,6 +71,14 @@ class BP_Compliments {
     }
 
     /**
+     * Get the sender IDs for a given user.
+     */
+    public static function get_compliments( $user_id ) {
+        global $bp, $wpdb;
+        return $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$bp->compliments->table_name} WHERE receiver_id = %d", $user_id ) );
+    }
+
+    /**
      * Get the user IDs that a user is receivers.
      */
     public static function get_receivers( $user_id ) {
