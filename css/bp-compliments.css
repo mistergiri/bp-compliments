@@ -114,3 +114,7 @@
     font-size: 10px;
     font-style: normal;
 }
+.comp-loading-icon {
+    text-align: center;
+    padding: 50px 0;
+}

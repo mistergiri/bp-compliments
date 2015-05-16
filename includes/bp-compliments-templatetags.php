@@ -17,7 +17,7 @@ function bp_compliments_get_add_compliment_button( $args = '' ) {
         'link_text'     => '',
         'link_title'    => '',
         'wrapper_class' => '',
-        'link_class'    => '',
+        'link_class'    => 'compliments-popup',
         'wrapper'       => 'div'
     ) );
 
@@ -41,7 +41,7 @@ function bp_compliments_get_add_compliment_button( $args = '' ) {
     $id        = 'compliments';
     $action    = 'start';
     $class     = 'compliments';
-    $link_text = sprintf( _x( 'Compliments', 'Button', 'bp-compliments' ), apply_filters( 'bp_compliments_receiver_name', bp_get_user_firstname( $receiver_fullname ), $r['receiver_id'] ) );
+    $link_text = sprintf( _x( 'Compliments', 'Button', BP_COMP_TEXTDOMAIN ), apply_filters( 'bp_compliments_receiver_name', bp_get_user_firstname( $receiver_fullname ), $r['receiver_id'] ) );
 
     if ( empty( $r['link_text'] ) ) {
         $r['link_text'] = $link_text;
@@ -100,5 +100,5 @@ function bp_compliments_get_compliments( $args = '' ) {
         'user_id' => bp_displayed_user_id()
     ) );
 
-    return apply_filters( 'bp_compliments_get_senders', BP_Compliments::get_compliments( $r['user_id'] ) );
+    return apply_filters( 'bp_compliments_get_compliments', BP_Compliments::get_compliments( $r['user_id'] ) );
 }

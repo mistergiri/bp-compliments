@@ -15,9 +15,14 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * Only load the plugin code if BuddyPress is activated.
  */
 function bp_compliments_init() {
+    global $wpdb, $bp;
     // some pertinent defines
     define( 'BP_COMPLIMENTS_DIR', dirname( __FILE__ ) );
     define( 'BP_COMPLIMENTS_URL', plugin_dir_url( __FILE__ ) );
+    if ( !$table_prefix = $bp->table_prefix )
+        $table_prefix = apply_filters( 'bp_core_get_table_prefix', $wpdb->base_prefix );
+    define( 'BP_COMPLIMENTS_TABLE', $table_prefix . 'bp_compliments' );
+    define( 'BP_COMP_TEXTDOMAIN', 'bp_compliments' );
 
     // only supported in BP 1.5+
     if ( version_compare( BP_VERSION, '1.3', '>' ) ) {
@@ -25,7 +30,7 @@ function bp_compliments_init() {
 
         // show admin notice for users on BP 1.2.x
     } else {
-        $older_version_notice = __( "Hey! BP Compliments requires BuddyPress 1.5 or higher.", 'bp-compliments' );
+        $older_version_notice = __( "Hey! BP Compliments requires BuddyPress 1.5 or higher.", BP_COMP_TEXTDOMAIN );
 
         add_action( 'admin_notices', create_function( '', "
 			echo '<div class=\"error\"><p>' . $older_version_notice . '</p></div>';
@@ -57,3 +62,4 @@ function bp_compliments_activate() {
     dbDelta( $sql );
 }
 register_activation_hook( __FILE__, 'bp_compliments_activate' );
+

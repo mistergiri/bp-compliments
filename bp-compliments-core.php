@@ -15,7 +15,7 @@ class BP_Compliments_Component extends BP_Component {
         // let's start the show!
         parent::start(
             'compliments',
-            __( 'Compliments', 'bp-compliments' ),
+            __( 'Compliments', BP_COMP_TEXTDOMAIN ),
             constant( 'BP_COMPLIMENTS_DIR' ) . '/includes',
             $this->params
         );
@@ -40,6 +40,7 @@ class BP_Compliments_Component extends BP_Component {
         require( $this->path . '/bp-compliments-screens.php' );
         require( $this->path . '/bp-compliments-templatetags.php' );
         require( $this->path . '/bp-compliments-actions.php' );
+        require( $this->path . '/bp-compliments-forms.php' );
     }
 
     /**
@@ -56,7 +57,7 @@ class BP_Compliments_Component extends BP_Component {
         // Set up the $globals array
         $globals = array(
             'global_tables'         => array(
-                'table_name' => $bp->table_prefix . 'bp_compliments',
+                'table_name' => BP_COMPLIMENTS_TABLE,
             )
         );
 
@@ -105,7 +106,7 @@ class BP_Compliments_Component extends BP_Component {
         $counts  = bp_compliments_total_counts( array( 'user_id' => $user_id ) );
 
         bp_core_new_nav_item( array(
-            'name'                => sprintf( __( 'Compliments <span>%d</span>', 'bp-compliments' ), $counts['senders'] ),
+            'name'                => sprintf( __( 'Compliments <span>%d</span>', BP_COMP_TEXTDOMAIN ), $counts['senders'] ),
             'slug'                => $bp->compliments->compliments->slug,
             'position'            => $this->params['adminbar_myaccount_order'],
             'screen_function'     => 'bp_compliments_screen_compliments',
@@ -147,55 +148,3 @@ function bp_compliments_setup_component() {
     $bp->compliments = new BP_Compliments_Component;
 }
 add_action( 'bp_loaded', 'bp_compliments_setup_component' );
-
-function bp_compliments_modal_form() {
-    ?>
-    <div class="comp-modal">
-        <div class="comp-modal-content-wrap">
-            <div class="comp-modal-title">
-                <h2>Choose Your Compliment Type:</h2>
-            </div>
-            <div class="comp-modal-content">
-                <form action="" method="post">
-                    <?php
-                    $args = array(
-                        'hide_empty' => false,
-                        'orderby'  => 'id'
-                    );
-                    $terms = get_terms( 'compliment', $args );
-                    if ( ! empty( $terms ) && ! is_wp_error( $terms ) ){
-                        echo '<ul class="comp-form-ul">';
-                        $count = 0;
-                        foreach ( $terms as $term ) {
-                            $count++;
-                            $t_id = $term->term_id;
-                            $term_meta = get_option( "taxonomy_$t_id" );
-                            ?>
-                            <li>
-                            <label>
-                                <input type="radio" name="type" value="<?php echo $term->slug; ?>" <?php if ($count == 1) { echo 'checked="checked"'; } ?>>
-                                <span>
-                                    <img style="height: 20px; width: 20px; vertical-align:middle" src='<?php echo esc_attr( $term_meta['compliments_icon'] ) ? esc_attr( $term_meta['compliments_icon'] ) : ''; ?>' class='preview-upload'/>
-                                    <?php echo $term->name; ?>
-                                </span>
-                            </label>
-                            </li>
-                            <?php
-                        }
-                        echo '</ul>';
-
-                        ?>
-                        <textarea name="message" maxchar="100"></textarea>
-                        <div class="yepp-pop-buttons">
-                            <button type="submit" class="comp-submit-btn" value="submit">Send</button>
-                            <a class="bp-comp-cancel" href="#">Cancel</a>
-                        </div>
-                        <?php
-                    }
-                    ?>
-                </form>
-            </div>
-        </div>
-    </div>
-<?php
-}
