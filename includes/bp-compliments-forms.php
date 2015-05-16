@@ -61,6 +61,15 @@ function bp_compliments_modal_form() {
                             <button type="submit" class="comp-submit-btn" name="comp-modal-form" value="submit">Send</button>
                             <a class="bp-comp-cancel" href="#">Cancel</a>
                         </div>
+                        <script type="text/javascript">
+                            jQuery(document).ready(function() {
+                                jQuery('a.bp-comp-cancel').click(function (e) {
+                                    e.preventDefault();
+                                    var container = jQuery('.comp-modal');
+                                    container.hide();
+                                });
+                            });
+                        </script>
                     <?php
                     }
                     ?>
