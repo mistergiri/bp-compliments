@@ -48,7 +48,11 @@
                             </div>
                         </div>
                         <div class="comp-user-message">
-                            <?php echo stripcslashes($comp->message); ?>
+                            <?php
+                            if ($comp->post_id) {
+                                echo "For ".bp_get_displayed_user_displayname()."'s review of: <a href='".get_the_permalink($comp->post_id)."'>".get_the_title($comp->post_id)."</a><br/>";
+                            }
+                            echo stripcslashes($comp->message); ?>
                         </div>
                     </div>
                 </li>

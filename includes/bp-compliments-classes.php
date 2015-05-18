@@ -24,6 +24,11 @@ class BP_Compliments {
     var $term_id;
 
     /**
+     * The post ID.
+     */
+    var $post_id;
+
+    /**
      * The compliment message.
      */
     var $message;
@@ -35,15 +40,19 @@ class BP_Compliments {
      * @param int $receiver_id The user ID of the user you want to compliment.
      * @param int $sender_id The user ID initiating the compliment request.
      * @param int $term_id The term ID of the compliment type.
+     * @param int $post_id The post ID.
      * @param string $message The compliment message.
      */
-    public function __construct( $receiver_id = 0, $sender_id = 0, $term_id = 0, $message = '' ) {
+    public function __construct( $receiver_id = 0, $sender_id = 0, $term_id = 0, $post_id = 0, $message = '' ) {
         if ( ! empty( $receiver_id ) && ! empty( $sender_id ) ) {
             $this->receiver_id   = (int) $receiver_id;
             $this->sender_id = (int) $sender_id;
         }
         if ( ! empty( $term_id ) ) {
             $this->term_id   = (int) $term_id;
+        }
+        if ( ! empty( $post_id ) ) {
+            $this->post_id   = (int) $post_id;
         }
         if ( ! empty( $message ) ) {
             $this->message   = $message;
@@ -56,16 +65,16 @@ class BP_Compliments {
     public function save() {
         global $wpdb, $bp;
         $table_name = BP_COMPLIMENTS_TABLE;
-        // do not use these filters
-        // use the 'bp_compliments_before_save' hook instead
+
         $this->receiver_id   = apply_filters( 'bp_compliments_receiver_id_before_save',   $this->receiver_id,   $this->id );
         $this->sender_id = apply_filters( 'bp_compliments_sender_id_before_save', $this->sender_id, $this->id );
         $this->term_id = apply_filters( 'bp_compliments_term_id_before_save', $this->term_id, $this->id );
+        $this->post_id = apply_filters( 'bp_compliments_post_id_before_save', $this->post_id, $this->id );
         $this->message = apply_filters( 'bp_compliments_message_before_save', $this->message, $this->id );
 
         do_action_ref_array( 'bp_compliments_before_save', array( &$this ) );
 
-        $result = $wpdb->query( $wpdb->prepare( "INSERT INTO {$table_name} ( receiver_id, sender_id, term_id, message, created_at ) VALUES ( %d, %d, %d, %s, %s )", $this->receiver_id, $this->sender_id, $this->term_id, $this->message, current_time( 'mysql' ) ) );
+        $result = $wpdb->query( $wpdb->prepare( "INSERT INTO {$table_name} ( receiver_id, sender_id, term_id, post_id, message, created_at ) VALUES ( %d, %d, %d, %d, %s, %s )", $this->receiver_id, $this->sender_id, $this->term_id, $this->post_id, $this->message, current_time( 'mysql' ) ) );
 
         $this->id = $wpdb->insert_id;
 

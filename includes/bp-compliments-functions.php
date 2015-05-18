@@ -9,10 +9,11 @@ function bp_compliments_start_compliment( $args = '' ) {
         'receiver_id'   => bp_displayed_user_id(),
         'sender_id' => bp_loggedin_user_id(),
         'term_id' => 0,
+        'post_id' => 0,
         'message' => null
     ) );
 
-    $compliment = new BP_Compliments( $r['receiver_id'], $r['sender_id'], $r['term_id'], $r['message'] );
+    $compliment = new BP_Compliments( $r['receiver_id'], $r['sender_id'], $r['term_id'], $r['post_id'], $r['message'] );
 
     if ( ! $compliment->save() ) {
         return false;

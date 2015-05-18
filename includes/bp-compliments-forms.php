@@ -2,18 +2,25 @@
 function handle_compliments_form_data() {
     if (isset($_POST['comp-modal-form'])) {
         $term_id = strip_tags(esc_sql($_POST['term_id']));
+        $post_id = strip_tags(esc_sql($_POST['post_id']));
+        $receiver_id = strip_tags(esc_sql($_POST['receiver_id']));
         $message = strip_tags(esc_sql($_POST['message']));
         $args = array(
             'term_id' => (int) $term_id,
-            'message' => $message
+            'post_id' => (int) $post_id,
+            'message' => $message,
+            'sender_id' => get_current_user_id()
         );
+        if ($receiver_id) {
+            $args['receiver_id'] = $receiver_id;
+        }
         bp_compliments_start_compliment($args);
     }
 }
 add_action( 'bp_init', 'handle_compliments_form_data', 99 );
 
 
-function bp_compliments_modal_form() {
+function bp_compliments_modal_form($pid = 0, $receiver_id = 0) {
     ?>
     <div class="comp-modal">
         <div class="comp-modal-content-wrap">
@@ -51,6 +58,8 @@ function bp_compliments_modal_form() {
 
                         ?>
                         <textarea name="message" maxchar="100"></textarea>
+                        <input type="hidden" name="post_id" value="<?php echo $pid; ?>"/>
+                        <input type="hidden" name="receiver_id" value="<?php echo $receiver_id; ?>"/>
                         <div class="yepp-pop-buttons">
                             <button type="submit" class="comp-submit-btn" name="comp-modal-form" value="submit">Send</button>
                             <a class="bp-comp-cancel" href="#">Cancel</a>
