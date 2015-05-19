@@ -11,7 +11,22 @@
 <div class="comp-user-content">
     <ul class="comp-user-ul">
         <?php
-        $compliments = bp_compliments_get_compliments();
+        $count_args = array(
+            'user_id' => bp_displayed_user_id()
+        );
+        $count_array = bp_compliments_total_counts($count_args);
+        $total = (int) $count_array['senders'];
+        $items_per_page = 5;
+        $page = isset( $_GET['cpage'] ) ? abs( (int) $_GET['cpage'] ) : 1;
+        $offset = ($page * $items_per_page) - $items_per_page;
+        $args = array(
+            'offset' => $offset,
+            'limit' => $items_per_page
+        );
+        $compliments = bp_compliments_get_compliments($args);
+        $start = $offset ? $offset : 1;
+        $end = $offset + $items_per_page;
+        $end = ($end > $total) ? $total : $end;
         if ($compliments) {
             foreach ($compliments as $comp) {
                 $t_id = $comp->term_id;
@@ -58,6 +73,25 @@
                 </li>
             <?php
             }
+            if ($total > $items_per_page) { ?>
+                <div id="pag-top" class="pagination">
+                    <div class="pag-count" id="member-dir-count-top">
+                        <?php echo sprintf(_n('1 of 1', '%1$s to %2$s of %3$s', $total, 'buddypress'), $start, $end, $total); ?>
+                    </div>
+                    <div class="pagination-links">
+                        <span class="yepp-pagination-text"><?php echo __('Go to Page', GEODIRECTORY_FRAMEWORK) ?></span>
+                        <?php
+                        echo paginate_links(array(
+                            'base' => esc_url(add_query_arg('cpage', '%#%')),
+                            'format' => '',
+                            'prev_next' => false,
+                            'total' => ceil($total / $items_per_page),
+                            'current' => $page
+                        ));
+                        ?>
+                    </div>
+                </div>
+            <?php }
         } else {
             if (bp_displayed_user_id() == bp_loggedin_user_id()) {
                 ?>

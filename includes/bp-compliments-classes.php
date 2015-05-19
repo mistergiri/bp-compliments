@@ -94,15 +94,21 @@ class BP_Compliments {
 
     /**
      * Get the sender IDs for a given user.
+     * @param $user_id
+     * @param $offset
+     * @param $limit
+     * @return mixed
      */
-    public static function get_compliments( $user_id ) {
+    public static function get_compliments( $user_id, $offset, $limit ) {
         global $bp, $wpdb;
         $table_name = BP_COMPLIMENTS_TABLE;
-        return $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$table_name} WHERE receiver_id = %d", $user_id ) );
+        return $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$table_name} WHERE receiver_id = %d LIMIT %d, %d", $user_id, $offset, $limit ) );
     }
 
     /**
      * Get the senders / receivers counts for a given user.
+     * @param $user_id
+     * @return array
      */
     public static function get_counts( $user_id ) {
         global $bp, $wpdb;
@@ -116,7 +122,7 @@ class BP_Compliments {
 
     /**
      * Deletes all compliments for a given user.
-     *
+     * @param $user_id
      */
     public static function delete_all_for_user( $user_id ) {
         global $bp, $wpdb;

@@ -40,16 +40,16 @@ function bp_compliments_total_counts( $args = '' ) {
     if ( $r['user_id'] == bp_loggedin_user_id() && is_user_logged_in() ) {
         global $bp;
 
-        if ( ! empty( $bp->loggedin_user->total_counts ) ) {
-            $count = $bp->loggedin_user->total_counts;
+        if ( ! empty( $bp->loggedin_user->total_compliment_counts ) ) {
+            $count = $bp->loggedin_user->total_compliment_counts;
         }
 
         // displayed user
     } elseif ( $r['user_id'] == bp_displayed_user_id() && bp_is_user() ) {
         global $bp;
 
-        if ( ! empty( $bp->displayed_user->total_counts ) ) {
-            $count = $bp->displayed_user->total_counts;
+        if ( ! empty( $bp->displayed_user->total_compliment_counts ) ) {
+            $count = $bp->displayed_user->total_compliment_counts;
         }
     }
 

@@ -73,14 +73,14 @@ class BP_Compliments_Component extends BP_Component {
 
         // locally cache total count values for logged-in user
         if ( is_user_logged_in() ) {
-            $bp->loggedin_user->total_counts = bp_compliments_total_counts( array(
+            $bp->loggedin_user->total_compliment_counts = bp_compliments_total_counts( array(
                 'user_id' => bp_loggedin_user_id()
             ) );
         }
 
         // locally cache total count values for displayed user
         if ( bp_is_user() && ( bp_loggedin_user_id() != bp_displayed_user_id() ) ) {
-            $bp->displayed_user->total_counts = bp_compliments_total_counts( array(
+            $bp->displayed_user->total_compliment_counts = bp_compliments_total_counts( array(
                 'user_id' => bp_displayed_user_id()
             ) );
         }

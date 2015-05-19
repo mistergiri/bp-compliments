@@ -95,10 +95,11 @@ function bp_compliments_add_profile_compliment_button() {
 add_action( 'bp_member_header_actions', 'bp_compliments_add_profile_compliment_button' );
 
 function bp_compliments_get_compliments( $args = '' ) {
-
     $r = wp_parse_args( $args, array(
-        'user_id' => bp_displayed_user_id()
+        'user_id' => bp_displayed_user_id(),
+        'offset' => 0,
+        'limit' => 100
     ) );
 
-    return apply_filters( 'bp_compliments_get_compliments', BP_Compliments::get_compliments( $r['user_id'] ) );
+    return apply_filters( 'bp_compliments_get_compliments', BP_Compliments::get_compliments( $r['user_id'], $r['offset'], $r['limit'] ) );
 }
