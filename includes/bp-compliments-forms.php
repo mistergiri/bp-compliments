@@ -60,7 +60,7 @@ function bp_compliments_modal_form($pid = 0, $receiver_id = 0) {
                         <textarea name="message" maxchar="100"></textarea>
                         <input type="hidden" name="post_id" value="<?php echo $pid; ?>"/>
                         <input type="hidden" name="receiver_id" value="<?php echo $receiver_id; ?>"/>
-                        <div class="yepp-pop-buttons">
+                        <div class="whoop-pop-buttons">
                             <button type="submit" class="comp-submit-btn" name="comp-modal-form" value="submit">Send</button>
                             <a class="bp-comp-cancel" href="#">Cancel</a>
                         </div>

@@ -1,9 +1,9 @@
 <?php do_action('bp_before_member_' . bp_current_action() . '_content'); ?>
 
 <?php //bp_compliments_modal_form(); ?>
-<div class="yepp-review-header yepp-event-header-wrap">
-    <div class="yepp-title-and-count">
-        <h3 class="yepp-tab-title">
+<div class="whoop-review-header whoop-event-header-wrap">
+    <div class="whoop-title-and-count">
+        <h3 class="whoop-tab-title">
             <?php echo bp_get_displayed_user_displayname() . '\'s Compliments'; ?>
         </h3>
     </div>
@@ -51,7 +51,7 @@
                             <div class="comment-meta comment-author vcard">
                                 <?php
                                 $user = get_user_by('id', $author_id);
-                                $name = yepp_bp_member_name(yepp_get_current_user_name($user));
+                                $name = whoop_bp_member_name(whoop_get_current_user_name($user));
                                 $user_link = bp_core_get_user_domain($author_id);
                                 ?>
                                 <?php echo get_avatar($author_id, 60); ?>
@@ -59,7 +59,7 @@
                                         <a href="<?php echo $user_link; ?>" class="url"><?php echo $name; ?></a>
                                     </b>
                                 </cite>
-                                <?php yepp_get_user_stats($author_id); ?>
+                                <?php whoop_get_user_stats($author_id); ?>
                             </div>
                         </div>
                         <div class="comp-user-message">
@@ -79,7 +79,7 @@
                         <?php echo sprintf(_n('1 of 1', '%1$s to %2$s of %3$s', $total, 'buddypress'), $start, $end, $total); ?>
                     </div>
                     <div class="pagination-links">
-                        <span class="yepp-pagination-text"><?php echo __('Go to Page', GEODIRECTORY_FRAMEWORK) ?></span>
+                        <span class="whoop-pagination-text"><?php echo __('Go to Page', GEODIRECTORY_FRAMEWORK) ?></span>
                         <?php
                         echo paginate_links(array(
                             'base' => esc_url(add_query_arg('cpage', '%#%')),
@@ -95,14 +95,14 @@
         } else {
             if (bp_displayed_user_id() == bp_loggedin_user_id()) {
                 ?>
-                <div class="bp-no-compliments yepp-no-events">
+                <div class="bp-no-compliments whoop-no-events">
                     <p><?php echo __('Aw, you have no compliments yet. To get some try sending compliments to others.', BP_COMP_TEXTDOMAIN); ?></p>
                     <p><i class="fa fa-trophy"></i></p>
                 </div>
             <?php
             } else {
                 ?>
-                <div class="bp-no-compliments yepp-no-events">
+                <div class="bp-no-compliments whoop-no-events">
                     <p><?php echo __('Sorry, no compliments just yet.', BP_COMP_TEXTDOMAIN); ?></p>
                     <p><i class="fa fa-trophy"></i></p>
                 </div>
