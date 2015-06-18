@@ -40,8 +40,8 @@ class BP_Compliments {
      * @param int $receiver_id The user ID of the user you want to compliment.
      * @param int $sender_id The user ID initiating the compliment request.
      * @param int $term_id The term ID of the compliment type.
-     * @param int $post_id The post ID.
-     * @param string $message The compliment message.
+     * @param int $post_id Optional. The post ID. If the compliment is for a post.
+     * @param string $message Optional. The compliment message.
      */
     public function __construct( $receiver_id = 0, $sender_id = 0, $term_id = 0, $post_id = 0, $message = '' ) {
         if ( ! empty( $receiver_id ) && ! empty( $sender_id ) ) {
@@ -74,6 +74,10 @@ class BP_Compliments {
 
         do_action_ref_array( 'bp_compliments_before_save', array( &$this ) );
 
+        if (!$this->term_id OR !$this->receiver_id OR !$this->sender_id) {
+            return false;
+        }
+
         $result = $wpdb->query( $wpdb->prepare( "INSERT INTO {$table_name} ( receiver_id, sender_id, term_id, post_id, message, created_at ) VALUES ( %d, %d, %d, %d, %s, %s )", $this->receiver_id, $this->sender_id, $this->term_id, $this->post_id, $this->message, current_time( 'mysql' ) ) );
 
         $this->id = $wpdb->insert_id;
@@ -102,7 +106,7 @@ class BP_Compliments {
     public static function get_compliments( $user_id, $offset, $limit ) {
         global $bp, $wpdb;
         $table_name = BP_COMPLIMENTS_TABLE;
-        return $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$table_name} WHERE receiver_id = %d LIMIT %d, %d", $user_id, $offset, $limit ) );
+        return $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$table_name} WHERE receiver_id = %d ORDER BY created_at DESC LIMIT %d, %d", $user_id, $offset, $limit ) );
     }
 
     /**

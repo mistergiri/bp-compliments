@@ -104,7 +104,7 @@ class BP_Compliments_Component extends BP_Component {
         // Need to change the user ID, so if we're not on a member page, $counts variable is still calculated
         $user_id = bp_is_user() ? bp_displayed_user_id() : bp_loggedin_user_id();
         $counts  = bp_compliments_total_counts( array( 'user_id' => $user_id ) );
-
+        
         bp_core_new_nav_item( array(
             'name'                => sprintf( __( 'Compliments <span>%d</span>', BP_COMP_TEXTDOMAIN ), $counts['senders'] ),
             'slug'                => $bp->compliments->compliments->slug,

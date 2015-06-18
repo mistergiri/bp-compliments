@@ -23,13 +23,13 @@ function bp_compliments_init() {
     if ( !$table_prefix = $bp->table_prefix )
         $table_prefix = apply_filters( 'bp_core_get_table_prefix', $wpdb->base_prefix );
     define( 'BP_COMPLIMENTS_TABLE', $table_prefix . 'bp_compliments' );
-    define( 'BP_COMP_TEXTDOMAIN', 'bp_compliments' );
+    define( 'BP_COMP_TEXTDOMAIN', 'bp-compliments' );
 
     // only supported in BP 1.5+
     if ( version_compare( BP_VERSION, '1.3', '>' ) ) {
         require( constant( 'BP_COMPLIMENTS_DIR' ) . '/bp-compliments-core.php' );
 
-        // show admin notice for users on BP 1.2.x
+    // show admin notice for users on BP 1.2.x
     } else {
         $older_version_notice = __( "Hey! BP Compliments requires BuddyPress 1.5 or higher.", BP_COMP_TEXTDOMAIN );
 

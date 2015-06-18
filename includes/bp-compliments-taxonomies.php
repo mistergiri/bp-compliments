@@ -51,7 +51,8 @@ function compliments_taxonomy_add_new_meta_field() {
      	<label for="term_meta[compliments_icon]"><?php _e( 'Compliment Icon', 'compliments' ); ?></label>
         <input type='text' id='compliments_icon' class='regular-text text-upload compliments-icon-field' name='term_meta[compliments_icon]' value=''/>
         <input type='button' class='button button-upload' value='Upload Icon'/></br>
-        <img style='max-width: 300px; display:block' src='' class='preview-upload'/>
+        <p>Recommended icon size: 20px x 20px</p>
+<!--        <img style='max-width: 300px; display:block' src='' class='preview-upload'/>-->
     </span>
     </div>
 <?php

@@ -1,31 +1,10 @@
 <?php
-function handle_compliments_form_data() {
-    if (isset($_POST['comp-modal-form'])) {
-        $term_id = strip_tags(esc_sql($_POST['term_id']));
-        $post_id = strip_tags(esc_sql($_POST['post_id']));
-        $receiver_id = strip_tags(esc_sql($_POST['receiver_id']));
-        $message = strip_tags(esc_sql($_POST['message']));
-        $args = array(
-            'term_id' => (int) $term_id,
-            'post_id' => (int) $post_id,
-            'message' => $message,
-            'sender_id' => get_current_user_id()
-        );
-        if ($receiver_id) {
-            $args['receiver_id'] = $receiver_id;
-        }
-        bp_compliments_start_compliment($args);
-    }
-}
-add_action( 'bp_init', 'handle_compliments_form_data', 99 );
-
-
 function bp_compliments_modal_form($pid = 0, $receiver_id = 0) {
     ?>
     <div class="comp-modal">
         <div class="comp-modal-content-wrap">
             <div class="comp-modal-title">
-                <h2>Choose Your Compliment Type:</h2>
+                <h2><?php echo __( 'Choose Your Compliment Type:', BP_COMP_TEXTDOMAIN ); ?></h2>
             </div>
             <div class="comp-modal-content">
                 <form action="" method="post">
@@ -57,19 +36,23 @@ function bp_compliments_modal_form($pid = 0, $receiver_id = 0) {
                         echo '</ul>';
 
                         ?>
-                        <textarea name="message" maxchar="100"></textarea>
+                        <textarea name="message" maxchar="1000"></textarea>
                         <input type="hidden" name="post_id" value="<?php echo $pid; ?>"/>
                         <input type="hidden" name="receiver_id" value="<?php echo $receiver_id; ?>"/>
-                        <div class="whoop-pop-buttons">
-                            <button type="submit" class="comp-submit-btn" name="comp-modal-form" value="submit">Send</button>
-                            <a class="bp-comp-cancel" href="#">Cancel</a>
+                        <?php wp_nonce_field( 'handle_compliments_form_data','handle_compliments_nonce' ); ?>
+                        <div class="bp-comp-pop-buttons">
+                            <button type="submit" class="comp-submit-btn" name="comp-modal-form" value="submit"><?php echo __( 'Send', BP_COMP_TEXTDOMAIN ); ?></button>
+                            <a class="bp-comp-cancel" href="#"><?php echo __( 'Cancel', BP_COMP_TEXTDOMAIN ); ?></a>
                         </div>
                         <script type="text/javascript">
                             jQuery(document).ready(function() {
                                 jQuery('a.bp-comp-cancel').click(function (e) {
                                     e.preventDefault();
+                                    var mod_shadow = jQuery('#bp_compliments_modal_shadow');
                                     var container = jQuery('.comp-modal');
                                     container.hide();
+                                    container.replaceWith("<div class='comp-modal' style='display: none;'><div class='comp-modal-content-wrap'><div class='comp-modal-title comp-loading-icon'><div class='bp-loading-icon'></div></div></div></div>");
+                                    mod_shadow.hide();
                                 });
                             });
                         </script>
@@ -90,6 +73,11 @@ function bp_compliments_modal_ajax()
     wp_die();
 }
 
+function bp_compliments_modal_shadow(){ ?>
+    <div id="bp_compliments_modal_shadow" style="display: none;"></div>
+<?php }
+add_action('wp_footer', 'bp_compliments_modal_shadow');
+
 //Ajax functions
 add_action('wp_ajax_bp_compliments_modal_ajax', 'bp_compliments_modal_ajax');
 
@@ -101,7 +89,7 @@ function bp_compliments_js() {
     <div class="comp-modal" style="display: none;">
         <div class="comp-modal-content-wrap">
             <div class="comp-modal-title comp-loading-icon">
-                <i class="fa fa-cog fa-spin"></i>
+                <div class="bp-loading-icon"></div>
             </div>
         </div>
     </div>
@@ -109,7 +97,9 @@ function bp_compliments_js() {
         jQuery(document).ready(function() {
             jQuery('a.compliments-popup').click(function (e) {
                 e.preventDefault();
+                var mod_shadow = jQuery('#bp_compliments_modal_shadow');
                 var container = jQuery('.comp-modal');
+                mod_shadow.show();
                 container.show();
                 var data = {
                     'action': 'bp_compliments_modal_ajax',
