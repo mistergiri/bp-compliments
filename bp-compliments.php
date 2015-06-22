@@ -17,7 +17,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
 function bp_compliments_init() {
     global $wpdb, $bp;
     // some pertinent defines
-    define( 'BP_COMPLIMENTS_VER', 0.1 );
+    define( 'BP_COMPLIMENTS_VER', "0.0.1" );
     define( 'BP_COMPLIMENTS_DIR', dirname( __FILE__ ) );
     define( 'BP_COMPLIMENTS_URL', plugin_dir_url( __FILE__ ) );
     if ( !$table_prefix = $bp->table_prefix )
@@ -68,4 +68,26 @@ function bp_compliments_activate() {
     }
 }
 register_activation_hook( __FILE__, 'bp_compliments_activate' );
+
+/**
+ * Custom text domain loader.
+ *
+ * Checks WP_LANG_DIR for the .mo file first, then the plugin's language folder.
+ * Allows for a custom language file other than those packaged with the plugin.
+ *
+ * @uses load_textdomain() Loads a .mo file into WP
+ */
+function bp_compliments_localization() {
+    $mo_file		= sprintf( 'bp-compliments-%s.mo', get_locale() );
+    $mo_file_global	= trailingslashit( WP_LANG_DIR ) . $mo_file;
+    $mo_file_local	= plugin_dir_path( __FILE__ ) . 'languages/' . $mo_file;
+
+    if ( is_readable( $mo_file_global ) )
+        return load_textdomain( 'bp-compliments', $mo_file_global );
+    elseif ( is_readable( $mo_file_local ) )
+        return load_textdomain( 'bp-compliments', $mo_file_local );
+    else
+        return false;
+}
+add_action( 'plugins_loaded', 'bp_compliments_localization' );
 
