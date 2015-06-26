@@ -31,8 +31,11 @@ define( 'BP_COMP_TEXTDOMAIN', 'bp-compliments' );
  */
 function bp_compliments_init() {
     global $wpdb, $bp;
+    // get plugin version from plugin data.
+    $plugin_data = get_plugin_data( __FILE__ );
+    $version = $plugin_data['Version'];
     // some pertinent defines
-    define( 'BP_COMPLIMENTS_VER', "0.0.2" );
+    define( 'BP_COMPLIMENTS_VER', $version );
     define( 'BP_COMPLIMENTS_DIR', dirname( __FILE__ ) );
     define( 'BP_COMPLIMENTS_URL', plugin_dir_url( __FILE__ ) );
     if ( !$table_prefix = $bp->table_prefix )
