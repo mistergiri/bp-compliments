@@ -10,7 +10,7 @@
 Plugin Name: BuddyPress Compliments
 Plugin URI: http://wpgeodirectory.com/
 Description: Compliments module for BuddyPress.
-Version: 0.0.2
+Version: 0.0.3
 Author: GeoDirectory
 Author URI: http://wpgeodirectory.com
 */
